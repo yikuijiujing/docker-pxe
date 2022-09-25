@@ -4,6 +4,9 @@ LABEL maintainer "ferrari.marco@gmail.com"
 
 # Install the necessary packages
 RUN apk add --no-cache \
+  openrc \
+  nginx \
+  vsftpd \
   dnsmasq \
   wget
 
@@ -34,7 +37,16 @@ COPY tftpboot/ /var/lib/tftpboot
 # Configure DNSMASQ
 COPY etc/ /etc
 
+# EXPOSE 67 67/udp 69 69/udp  
+# EXPOSE 21
+# EXPOSE 80
+
+RUN chown root:root /etc -R; rc-update add openrc; rc-update add nginx; rc-update add vsftpd; rc-update add dnsmasq
+
 # Start dnsmasq. It picks up default configuration from /etc/dnsmasq.conf and
 # /etc/default/dnsmasq plus any command line switch
-ENTRYPOINT ["dnsmasq", "--no-daemon"]
-CMD ["--dhcp-range=192.168.56.2,proxy"]
+# ENTRYPOINT ["dnsmasq", "--no-daemon"]
+# CMD ["--dhcp-range=192.168.50.1,proxy"]
+# COPY pxe.sh /
+
+ENTRYPOINT ["init"]
