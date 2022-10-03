@@ -1,0 +1,18 @@
+LABEL memtest86
+  MENU LABEL ^Memtest86+
+  KERNEL /images/memtest/memtest86+
+
+ LABEL rescue
+  MENU LABEL ^Trinity Rescue Kit 3.4
+  KERNEL /images/rescue/kernel.trk
+  APPEND initrd=/images/rescue/initrd.trk ramdisk_size=65536 trknfs=nfsroot=192.168.50.107:/images/rescue root=/dev/ram0 vga=788 splash=verbose pci=conf1 trkinmem trkmenu
+  
+
+MENU SEPARATOR
+
+LABEL MainMenu
+  MENU LABEL ^Return to Main Menu
+  KERNEL menu.c32
+  APPEND pxelinux.cfg/default
+
+
